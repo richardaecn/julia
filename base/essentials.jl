@@ -2,9 +2,11 @@
 
 abstract IO
 
-typealias Callable Union(Function,DataType)
+typealias Callable Union{Function,DataType}
 
-const Bottom = Union()
+const Bottom = Union{}
+
+call(::Type{Union}, args...) = Union{args...}
 
 # constructors for Core types in boot.jl
 call(T::Type{BoundsError}) = Core.call(T)
