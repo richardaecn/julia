@@ -15,6 +15,12 @@ type SparseMatrixCSC{Tv,Ti<:Integer} <: AbstractSparseMatrix{Tv,Ti}
     function SparseMatrixCSC(m::Integer, n::Integer, colptr::Vector{Ti}, rowval::Vector{Ti}, nzval::Vector{Tv})
         m < 0 && throw(ArgumentError("number of rows (m) must be ≥ 0, got $m"))
         n < 0 && throw(ArgumentError("number of columns (n) must be ≥ 0, got $n"))
+        try
+            zero(Tv)
+        catch e
+            isa(e, MethodError) && throw(ArgumentError("cannot construct a SparseMatrixCSC{$Tv} because zero($Tv) is not defined"))
+            rethrow(e)
+        end
         new(Int(m), Int(n), colptr, rowval, nzval)
     end
 end
@@ -184,9 +190,7 @@ convert{T}(::Type{AbstractMatrix{T}}, A::SparseMatrixCSC) = convert(SparseMatrix
 convert(::Type{Matrix}, S::SparseMatrixCSC) = full(S)
 
 function full{Tv}(S::SparseMatrixCSC{Tv})
-    # Handle cases where zero(Tv) is not defined but the array is dense.
-    # (Should we really worry about this?)
-    A = length(S) == nnz(S) ? Array(Tv, S.m, S.n) : zeros(Tv, S.m, S.n)
+    A = zeros(Tv, S.m, S.n)
     for col = 1 : S.n, k = S.colptr[col] : (S.colptr[col+1]-1)
         A[S.rowval[k], col] = S.nzval[k]
     end

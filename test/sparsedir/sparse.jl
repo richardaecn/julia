@@ -748,9 +748,8 @@ let S = spzeros(5,1), I = [false,true,false,true,false]
 end
 
 # issue #9917
-@test sparse([]') == reshape(sparse([]), 1, 0)
-@test full(sparse([])) == zeros(0, 1)
-@test_throws BoundsError sparse([])[1]
+@test sparse(Int[]') == reshape(sparse(Int[]), 1, 0)
+@test_throws BoundsError sparse(Int[])[1]
 x = speye(100)
 @test_throws BoundsError x[-10:10]
 

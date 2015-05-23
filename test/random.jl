@@ -305,8 +305,10 @@ for rng in ([], [MersenneTwister()], [RandomDevice()])
             X = T == Bool ? T[0,1] : T[0,1,2]
             rand!(rng..., A)            ::typeof(A)
             rand!(rng..., A, X)  ::typeof(A)
-            rand!(rng..., sparse(A))            ::typeof(sparse(A))
-            rand!(rng..., sparse(A), X)  ::typeof(sparse(A))
+            if T != Char
+                rand!(rng..., sparse(A))            ::typeof(sparse(A))
+                rand!(rng..., sparse(A), X)  ::typeof(sparse(A))
+            end
         end
     end
 end
