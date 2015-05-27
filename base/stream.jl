@@ -278,6 +278,18 @@ function stream_wait(x,c...)
     end
 end
 
+# reserve globals initialized later
+global uv_jl_asynccb
+global uv_jl_alloc_buf
+global uv_jl_readcb
+global uv_jl_connectioncb
+global uv_jl_connectcb
+global uv_jl_writecb_task
+global uv_eventloop
+global STDIN
+global STDOUT
+global STDERR
+
 function reinit_stdio()
     global uv_jl_asynccb = cglobal(:jl_uv_asynccb)
     global uv_jl_alloc_buf = cglobal(:jl_uv_alloc_buf)

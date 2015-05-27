@@ -6,6 +6,9 @@ typealias Callable Union(Function,DataType)
 
 const Bottom = Union()
 
+# reserve globals initialized later but referenced early
+global error, ==, length, getindex, repr, depwarn, dims2string, showall, JULIA_HOME
+
 # constructors for Core types in boot.jl
 call(T::Type{BoundsError}) = Core.call(T)
 call(T::Type{BoundsError}, args...) = Core.call(T, args...)
