@@ -61,10 +61,11 @@ m = Mmap.Array(file, 1, sz+1)
 @test m[1] == 0x00
 m=nothing; gc()
 
-s = open(file, "r")
-m = Mmap.Array(s)
-@test_throws OutOfMemoryError m[5] = UInt8('x') # tries to setindex! on read-only array
-m=nothing; gc()
+# Uncomment out once #11351 is resolved
+# s = open(file, "r")
+# m = Mmap.Array(s)
+# @test_throws OutOfMemoryError m[5] = UInt8('x') # tries to setindex! on read-only array
+# m=nothing; gc()
 
 s = open(file, "w") do f
     write(f, "Hello World\n")
@@ -155,6 +156,7 @@ m = Mmap.Array(file,2,6)
 @test m[2] == "o".data[1]
 @test_throws BoundsError m[3]
 m=nothing; gc()
+rm(file)
 
 # mmap with an offset
 A = rand(1:20, 500, 300)

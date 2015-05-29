@@ -149,7 +149,7 @@ Mmap.Array{T,N}(::Type{T}, dims::NTuple{N,Integer}, file::AbstractString, offset
 # using default type: UInt8
 Mmap.Array{N}(io::IO, dims::NTuple{N,Integer}, offset::Integer=position(io); grow::Bool=true, shared::Bool=true) =
     Mmap.Array(UInt8, dims, io, offset; grow=grow, shared=shared)
-Mmap.Array{N}(file::AbstractString, dims::NTuple{N,Integer}=(filesize(io),), offset::Integer=Int64(0); grow::Bool=true, shared::Bool=true) =
+Mmap.Array{N}(file::AbstractString, dims::NTuple{N,Integer}, offset::Integer=Int64(0); grow::Bool=true, shared::Bool=true) =
     open(io->Mmap.Array(UInt8, dims, io, offset; grow=grow, shared=shared), file, isfile(file) ? "r+" : "w+")
 
 # using a length argument instead of dims
